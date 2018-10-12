@@ -1,0 +1,30 @@
+Setup DB
+- Refer the attached image and create respective tables and POJO (plain old java object) classes
+- Person.id, Address.id and Person.created_date columns should be auto generated
+- Address.pincode should not be empty
+- Person.email should be constrained to be unique
+- Define all requisite constraints for the table like PKs and FKs
+
+CRUD Operations
+- Define AddressService class for CRUD (create, read, readAll, update and delete) operations for Address using JDBC
+  - use PreparedStatement appropriately
+- CRUD operation results should be tested using automated test cases
+  - need separate test cases for negative scenarios, like
+    - create Address without pincode
+    - create Person with duplicate email)
+  - Have proper asserts to validate all return values/scenarios
+  - Coverage should be 100% - including negative scenarios
+- Use the MySql JDBC Drive and TestNG jars from here: \\nas\Distribution\training\env\lib
+- try to avoid duplicate code for common jobs-to-be-done  across CRUD operations, like connection management (init, release)
+
+Txn Management with Cascade operations
+- Define PersonService class for Person object CRUDs, with cascade
+  - PersonService.create(..) should create Address as well, if Address is provided
+  - PersonService.read(..., boolean includeAddress) will include Address objects in the returned Person objects if includeAddress flag is true
+  - if Person creation fails (duplicate email), respective Address record should not be created as well
+  - there should be testcase to demonstrate this
+
+Stretch Goals (To be done only if above are completed)
+  - externalize the connection properties into db.properties file, so that it can be changed without changing code
+  - do not hardcode the path of db.properties file in the code
+  - Clue: Class.getResourceAsStream(String)

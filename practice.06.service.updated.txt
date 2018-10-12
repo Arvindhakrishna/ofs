@@ -1,0 +1,49 @@
+Job to be done:
+===========
+- validation
+    - id columns should be auto incremented
+    - Define all requisite constraints for the tables like PK, FK
+    - create/update services should validate the following,
+        + id is auto generated in the DB
+        + Following properties are mandatory and cannot be empty,
+            * Person.firstName
+            * Person.lastName
+            * Person.dob
+            * Person.dob should be in dd-mm-yyyy format, other format input should not be accepted
+            * Address.* (All fields in address class)
+        + Person should NOT duplicate firstName + lastName
+        + Services should NOT succeed if the validation fails
+
+- txn management
+    - create() services should cascade create the associated objects, if provided
+        + CompanyService.create(..) should create Address, Person instances as well
+    - read...() services should return the associated objects as well, based on a parameter
+    - PersonService.read(..., boolean includeAddress) will include Address objects in the returned Person objects if (includeAddress == true)
+    - delete() methods should cascade delete via Services, and NOT via table constraints
+    - Handle the transaction properly for each of the above case.
+    
+- Write AddressService.search(...) method to search based on either one or combination of following,
+    + pincode
+    + street
+    + city
+
+
+- Error handling
+    - Define AppException extending RuntimeException
+        + This exception should ONLY be created with a ErrorCode
+        + All possible error codes required in the application should be defined
+    - All service methods can ONLY throw a AppException.
+
+- orchestration
+    - Getting connection from the client, decide what is the desirable place to get the connection
+    - Decide where to Handle the exceptions and transaction
+    -Consider,
+        + Externalization of connection details
+        + Optimal usage of DB connection(s)
+        + Transaction management, including nested transactions
+
+- Write Test classes for each service
+    + Have proper asserts to validate all return values/scenarios
+    + expected 100% coverage 
+    + Annotate test groups to run any or combination of create/update/delete/read test cases alone
+    + Write a test case to insert 10/15/25 (configurable external to code) Person instances simultaneously
